@@ -1,65 +1,89 @@
-import Image from "next/image";
+import Link from "next/link";
+import { FiArrowRight } from "react-icons/fi";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 border-b border-white/[0.08] bg-black/50 backdrop-blur-md">
+        <div className="max-w-screen-xl mx-auto h-16 flex items-center justify-between px-6">
+          <div className="text-[15px] font-bold tracking-tight">
+            onelink
+          </div>
+          <div className="flex items-center gap-8">
+            <Link href="/login" className="text-[13px] text-zinc-400 hover:text-white transition-colors">
+              Log in
+            </Link>
+            <Link 
+              href="/login" 
+              className="h-9 px-4 flex items-center rounded-md bg-white text-black text-[13px] font-medium hover:bg-zinc-200 transition-all active:scale-[0.98]"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              Get started
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </nav>
+
+      {/* Hero Section */}
+      <main className="pt-48 pb-32 px-6">
+        <div className="max-w-screen-xl mx-auto flex flex-col items-center text-center">
+          <div className="inline-flex items-center px-3 py-1 rounded-full border border-white/[0.08] mb-10">
+            <span className="text-[11px] font-medium text-zinc-400 tracking-wide uppercase">
+              The new standard for bio links
+            </span>
+          </div>
+
+          <h1 className="text-[40px] md:text-[72px] font-bold leading-[1.1] tracking-tight mb-8">
+            One link for everything.<br />
+            <span className="text-zinc-500">Perfectly minimal.</span>
+          </h1>
+
+          <p className="text-[16px] md:text-[18px] text-zinc-400 max-w-[540px] leading-relaxed mb-12">
+            Create a professional profile in seconds. No clutter, no noise—just you and your best work, shared through a single URL.
+          </p>
+
+          <Link 
+            href="/login" 
+            className="group h-12 px-8 flex items-center gap-3 rounded-md bg-white text-black text-[14px] font-semibold hover:bg-zinc-200 transition-all active:scale-[0.98]"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Claim your link <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        {/* Feature Grid - Clean, border-based */}
+        <div className="max-w-screen-xl mx-auto mt-48 grid grid-cols-1 md:grid-cols-3 border-t border-white/[0.08]">
+          <div className="p-10 md:border-r border-white/[0.08]">
+            <h3 className="text-[15px] font-bold mb-3">Instant Speed</h3>
+            <p className="text-[13px] text-zinc-500 leading-relaxed">
+              Built on Next.js 16 for zero-latency page loads. Your profile is always ready.
+            </p>
+          </div>
+          <div className="p-10 md:border-r border-white/[0.08]">
+            <h3 className="text-[15px] font-bold mb-3">Neutral Design</h3>
+            <p className="text-[13px] text-zinc-500 leading-relaxed">
+              We focus on typography and whitespace so your content stays the star of the show.
+            </p>
+          </div>
+          <div className="p-10">
+            <h3 className="text-[15px] font-bold mb-3">Direct Insights</h3>
+            <p className="text-[13px] text-zinc-500 leading-relaxed">
+              Privacy-first analytics that tell you what's working without the tracking scripts.
+            </p>
+          </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/[0.08] py-20 px-6">
+        <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+          <div className="text-[14px] font-bold opacity-40">
+            onelink
+          </div>
+          <div className="text-[12px] text-zinc-600 font-medium tracking-wide uppercase">
+            Crafted with precision
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
