@@ -57,7 +57,7 @@ export default function DashboardPage() {
     const res = await fetch("/api/profile");
     if (!res.ok) return;
     const data = await res.json();
-    
+
     if (data.onboarded === false) {
       router.push("/onboarding");
       return;
@@ -81,14 +81,14 @@ export default function DashboardPage() {
 
   const handleUpdateProfile = async (data?: any) => {
     const updatedThemeConfig = { ...themeConfig, profileLayout, ...(data?.themeConfig || {}) };
-    const payload = { 
-      name: displayName, 
-      bio, 
+    const payload = {
+      name: displayName,
+      bio,
       banner,
       theme,
       themeConfig: updatedThemeConfig,
       socials: { ...socials, ...(data?.socials || {}) },
-      ...data 
+      ...data
     };
     await fetch("/api/profile", {
       method: "PATCH",
@@ -147,7 +147,7 @@ export default function DashboardPage() {
 
   const handleUrlBlur = async () => {
     if (!newUrl || newUrl.length < 5) return;
-    
+
     setIsFetchingMetadata(true);
     try {
       const res = await fetch(`/api/links/metadata?url=${encodeURIComponent(newUrl)}`);
@@ -228,9 +228,9 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center lg:items-start relative max-w-screen-2xl mx-auto px-6">
-      
+
       <div className="flex-1 w-full max-w-[640px] space-y-16 pb-24">
-        
+
         {/* Profile Editor */}
         <section className="bg-[#161616] p-10 rounded-[2.5rem] border border-white/5 space-y-10 shadow-2xl mt-8">
           <div className="flex items-center gap-8">
@@ -242,27 +242,27 @@ export default function DashboardPage() {
                   <span className="text-[32px] font-bold text-white/5">{session?.user?.name?.[0]}</span>
                 )}
               </div>
-              
+
               <label className="absolute -bottom-2 -right-2 p-2.5 bg-[#202020] text-indigo-400 rounded-xl border border-white/5 shadow-2xl cursor-pointer hover:scale-110 active:scale-95 transition-all z-10">
                 {isUploadingAvatar ? <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" /> : <FiCamera size={16} />}
                 <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, "avatar")} disabled={isUploadingAvatar} />
               </label>
             </div>
             <div className="flex-1 space-y-1">
-              <input 
-                value={displayName} 
-                onChange={e => setDisplayName(e.target.value)} 
+              <input
+                value={displayName}
+                onChange={e => setDisplayName(e.target.value)}
                 onBlur={(e) => handleUpdateProfile({ name: e.target.value })}
                 className="text-[28px] font-black bg-transparent border-none focus:outline-none w-full tracking-tight text-white placeholder:text-white/5"
                 placeholder="Your Name"
               />
-              <p className="text-[13px] text-white/20 font-mono">onelink.app/{session?.user?.username}</p>
+              <p className="text-[13px] text-white/20 font-mono">getonelink.vercel.app/{session?.user?.username}</p>
             </div>
           </div>
-          
-          <textarea 
-            value={bio} 
-            onChange={e => setBio(e.target.value)} 
+
+          <textarea
+            value={bio}
+            onChange={e => setBio(e.target.value)}
             onBlur={(e) => handleUpdateProfile({ bio: e.target.value })}
             className="text-[15px] text-white/40 bg-transparent border-none focus:outline-none w-full resize-none leading-relaxed placeholder:text-white/5"
             placeholder="Add a short bio..."
@@ -275,7 +275,7 @@ export default function DashboardPage() {
               {socialPlatforms.map(platform => (
                 <div key={platform.id} className="flex items-center gap-3 group">
                   <platform.icon size={18} className="text-white/10 group-focus-within:text-indigo-400 transition-colors" />
-                  <input 
+                  <input
                     placeholder={platform.label}
                     value={(socials as any)[platform.id] || ""}
                     onChange={e => {
@@ -295,7 +295,7 @@ export default function DashboardPage() {
         <section className="space-y-8 mt-12">
           <div className="flex items-center justify-between">
             <h2 className="text-[12px] font-black uppercase tracking-[3px] text-white/20">Active Links</h2>
-            <button 
+            <button
               onClick={() => setIsAdding(true)}
               className="px-6 py-2.5 bg-white text-black rounded-xl text-[12px] font-black hover:bg-zinc-200 transition-all shadow-xl active:scale-95 flex items-center gap-2"
             >
@@ -313,7 +313,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               )}
-              
+
               <div className="flex gap-8 mb-10">
                 <div className="w-32 h-32 rounded-3xl bg-white/[0.03] border border-white/5 flex items-center justify-center overflow-hidden group/thumb relative">
                   {(newThumbnail || newIcon) ? (
@@ -326,21 +326,21 @@ export default function DashboardPage() {
                     <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, "thumbnail")} disabled={isUploadingThumbnail} />
                   </label>
                   {newThumbnail && (
-                    <button 
-                      onClick={() => setNewThumbnail("")} 
+                    <button
+                      onClick={() => setNewThumbnail("")}
                       className="absolute top-2 right-2 p-1.5 bg-black/60 rounded-full opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity"
                     >
                       <FiTrash2 size={12} className="text-red-400" />
                     </button>
                   )}
                 </div>
-                
+
                 <div className="flex-1 space-y-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase text-white/10 tracking-widest ml-1">URL</label>
                     <div className="relative">
-                      <input 
-                        placeholder="https://github.com/your-username" 
+                      <input
+                        placeholder="https://github.com/your-username"
                         value={newUrl}
                         onChange={e => setNewUrl(e.target.value)}
                         onBlur={handleUrlBlur}
@@ -356,8 +356,8 @@ export default function DashboardPage() {
 
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase text-white/10 tracking-widest ml-1">Title</label>
-                    <input 
-                      placeholder="e.g. My GitHub Profile" 
+                    <input
+                      placeholder="e.g. My GitHub Profile"
                       value={newTitle}
                       onChange={e => setNewTitle(e.target.value)}
                       className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-[15px] focus:outline-none focus:border-indigo-500 transition-all font-medium text-white"
@@ -367,8 +367,8 @@ export default function DashboardPage() {
               </div>
 
               <div className="flex gap-4 pt-4 border-t border-white/5">
-                <button 
-                  onClick={handleAddLink} 
+                <button
+                  onClick={handleAddLink}
                   disabled={!newTitle || !newUrl}
                   className="px-8 py-3.5 bg-indigo-500 text-white rounded-2xl text-[13px] font-bold shadow-lg shadow-indigo-500/20 hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
@@ -384,11 +384,11 @@ export default function DashboardPage() {
               <SortableContext items={links.map((l) => l.id)} strategy={verticalListSortingStrategy}>
                 <div className="space-y-1">
                   {links.map((link) => (
-                    <SortableLinkItem 
-                      key={link.id} 
-                      link={link} 
-                      onDelete={handleDeleteLink} 
-                      onToggle={handleToggleLinkActive} 
+                    <SortableLinkItem
+                      key={link.id}
+                      link={link}
+                      onDelete={handleDeleteLink}
+                      onToggle={handleToggleLinkActive}
                     />
                   ))}
                   {links.length === 0 && !isAdding && (
@@ -430,7 +430,7 @@ export default function DashboardPage() {
         </div>
         <div className={`w-full aspect-[9/18.5] ${themeColors.bg} border-[12px] border-[#202020] rounded-[3.5rem] shadow-[0_60px_100px_-20px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col transition-colors duration-500`}>
           <div className="w-24 h-6 bg-[#202020] absolute top-0 left-1/2 -translate-x-1/2 rounded-b-3xl z-20" />
-          
+
           {/* BANNER REPLICA FOR PREVIEW */}
           {profileLayout === "classic" && banner && (
             <div className="w-full h-32 absolute top-0 left-0 bg-white/5 z-0">
@@ -439,20 +439,20 @@ export default function DashboardPage() {
           )}
 
           {profileLayout === "hero" && session?.user?.image && (
-             <div 
-               className="w-full h-1/2 absolute top-0 left-0 z-0 pointer-events-none"
-               style={{
-                 WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
-                 maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)"
-               }}
-             >
-               <img src={session.user.image} className="w-full h-full object-cover" />
-             </div>
+            <div
+              className="w-full h-1/2 absolute top-0 left-0 z-0 pointer-events-none"
+              style={{
+                WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
+                maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)"
+              }}
+            >
+              <img src={session.user.image} className="w-full h-full object-cover" />
+            </div>
           )}
 
           <div className="flex-1 mt-16 text-center w-full relative z-10 px-6 overflow-hidden flex flex-col">
-            <a 
-              href={`/${session?.user?.username}`} 
+            <a
+              href={`/${session?.user?.username}`}
               target="_blank"
               className="group/header block"
             >
@@ -469,11 +469,11 @@ export default function DashboardPage() {
               <h3 className={`text-[15px] font-bold ${themeColors.text} truncate max-w-[200px] mx-auto group-hover/header:opacity-80 transition-opacity uppercase tracking-tight`}>{displayName || "Your Name"}</h3>
               <p className={`text-[11px] ${themeColors.text} opacity-50 mb-6 mt-1 truncate`}>@{session?.user?.username}</p>
             </a>
-            
+
             <div className="space-y-3 w-full flex-1 overflow-y-auto no-scrollbar py-2">
               {links.map((link) => (
-                <a 
-                  key={link.id} 
+                <a
+                  key={link.id}
                   href={ensureAbsoluteUrl(link.url)}
                   target="_blank"
                   className={`flex items-center w-full min-h-12 py-2 px-3 ${themeColors.linkBg} border ${themeColors.border} rounded-xl text-[12px] font-semibold ${themeColors.linkText} shadow-md text-center hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer scale-in ${!link.isActive && "opacity-30"}`}
@@ -510,10 +510,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <QRShareModal 
-        isOpen={isShareModalOpen} 
-        onClose={() => setIsShareModalOpen(false)} 
-        username={session?.user?.username || ""} 
+      <QRShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        username={session?.user?.username || ""}
       />
     </div>
   );

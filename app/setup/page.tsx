@@ -103,7 +103,7 @@ export default function SetupPage() {
           <div className="space-y-4">
             <div className="relative">
               <span className="absolute left-0 top-1/2 -translate-y-1/2 text-white/20 text-[20px] font-medium pl-2">
-                onelink.app/
+                getonelink.vercel.app/
               </span>
               <input
                 type="text"
