@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { FiPlus, FiCamera, FiExternalLink, FiTrash2, FiZap, FiInstagram, FiTwitter, FiGithub, FiLinkedin, FiYoutube, FiGlobe, FiArrowUpRight } from "react-icons/fi";
+import { FiPlus, FiCamera, FiExternalLink, FiTrash2, FiZap, FiInstagram, FiTwitter, FiGithub, FiLinkedin, FiYoutube, FiGlobe, FiArrowUpRight, FiShare2 } from "react-icons/fi";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SortableLinkItem } from "@/components/SortableLinkItem";
+import QRShareModal from "@/components/dashboard/QRShareModal";
 
 interface Link {
   id: string;
@@ -43,6 +44,7 @@ export default function DashboardPage() {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
   const [savedImage, setSavedImage] = useState("");
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
 
@@ -408,14 +410,23 @@ export default function DashboardPage() {
       <div className="hidden lg:block sticky top-8 w-[260px] flex-shrink-0">
         <div className="flex items-center justify-between mb-6">
           <p className="text-[10px] font-black uppercase tracking-[3px] text-white/20">Live Preview</p>
-          <a
-            href={`/${session?.user?.username}`}
-            target="_blank"
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[12px] font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
-          >
-            <FiArrowUpRight size={14} />
-            Go Live
-          </a>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsShareModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white text-[12px] font-bold rounded-xl transition-all active:scale-95"
+            >
+              <FiShare2 size={14} />
+              Share
+            </button>
+            <a
+              href={`/${session?.user?.username}`}
+              target="_blank"
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[12px] font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
+            >
+              <FiArrowUpRight size={14} />
+              Go Live
+            </a>
+          </div>
         </div>
         <div className={`w-full aspect-[9/18.5] ${themeColors.bg} border-[12px] border-[#202020] rounded-[3.5rem] shadow-[0_60px_100px_-20px_rgba(0,0,0,1)] relative overflow-hidden flex flex-col transition-colors duration-500`}>
           <div className="w-24 h-6 bg-[#202020] absolute top-0 left-1/2 -translate-x-1/2 rounded-b-3xl z-20" />
@@ -499,6 +510,11 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      <QRShareModal 
+        isOpen={isShareModalOpen} 
+        onClose={() => setIsShareModalOpen(false)} 
+        username={session?.user?.username || ""} 
+      />
     </div>
   );
 }

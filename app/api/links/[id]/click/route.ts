@@ -3,11 +3,12 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     await prisma.link.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         clicks: {
           increment: 1,

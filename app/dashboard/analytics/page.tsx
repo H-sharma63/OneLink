@@ -12,10 +12,16 @@ import {
 } from "recharts";
 import { FiEye, FiMousePointer, FiArrowUpRight } from "react-icons/fi";
 
+interface Link {
+  id: string;
+  title: string;
+  clicks: number;
+}
+
 export default function AnalyticsPage() {
   const { status } = useSession();
-  const [links, setLinks] = useState([]);
-  const [profile, setProfile] = useState(null);
+  const [links, setLinks] = useState<Link[]>([]);
+  const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
