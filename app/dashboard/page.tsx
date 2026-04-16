@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { FiPlus, FiCamera, FiExternalLink, FiTrash2, FiZap, FiInstagram, FiTwitter, FiGithub, FiLinkedin, FiYoutube, FiGlobe, FiArrowUpRight, FiShare2 } from "react-icons/fi";
+import { FiPlus, FiCamera, FiExternalLink, FiTrash2, FiZap, FiInstagram, FiTwitter, FiGithub, FiLinkedin, FiYoutube, FiGlobe, FiArrowUpRight, FiShare2, FiCopy } from "react-icons/fi";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SortableLinkItem } from "@/components/SortableLinkItem";
@@ -39,6 +39,7 @@ export default function DashboardPage() {
   const [themeConfig, setThemeConfig] = useState<any>({});
   const [profileLayout, setProfileLayout] = useState<"classic" | "hero">("classic");
   const [socials, setSocials] = useState<any>({});
+  const [copied, setCopied] = useState(false);
 
   const [localImagePreview, setLocalImagePreview] = useState("");
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -95,6 +96,28 @@ export default function DashboardPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+  };
+
+  const handleCopyProfileLink = async (): Promise<void> => {
+    const username = session?.user?.username;
+    if (!username) { 
+      console.error("Username not available");
+      return;
+    };
+
+    const baseUrl =  typeof window !== "undefined"
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_BASE_URL || "";
+
+    const url = `${baseUrl}/${session?.user?.username}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy profile link: ', err);
+    }
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: "avatar" | "thumbnail") => {
@@ -256,7 +279,18 @@ export default function DashboardPage() {
                 className="text-[28px] font-black bg-transparent border-none focus:outline-none w-full tracking-tight text-white placeholder:text-white/5"
                 placeholder="Your Name"
               />
-              <p className="text-[13px] text-white/20 font-mono">getonelink.vercel.app/{session?.user?.username}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-[13px] text-white/20 font-mono">getonelink.vercel.app/{session?.user?.username}</p>
+                <button
+                  onClick={handleCopyProfileLink}
+                  aria-label="Copy profile link"
+                  className="p-1 text-white/20 hover:text-indigo-400 transition-colors"
+                  title="Copy profile link"
+                >
+                  <FiCopy size={14} />
+                </button>
+                {copied && <span className="text-[11px] text-indigo-400 font-medium">Copied!</span>}
+              </div>
             </div>
           </div>
 
